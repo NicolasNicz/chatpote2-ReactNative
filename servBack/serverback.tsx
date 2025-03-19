@@ -13,9 +13,16 @@ app.use(cors());
 
 app.post("/chatbot", async (req, res) => {
   try {
+    const { input, temperature = 0.2, top_p = 0.9 } = req.body;
     const response = await axios.post( //google/gemma-2-2b-it
       "https://api-inference.huggingface.co/models/google/gemma-2-2b-it",
-      { inputs: req.body.input },
+      { 
+        inputs: input,
+        parameters: { 
+          temperature,   // Ajout de temperature
+          top_p          // Ajout de top_p
+        }
+      },
       {
         headers: {
           Authorization: `Bearer ${process.env.HF_API_KEY}`,
